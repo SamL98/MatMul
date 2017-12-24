@@ -2,6 +2,7 @@ slen:
 	push rbp
 	mov rbp, rsp
 
+	push rbx
 	mov rax, rdi
 	mov rbx, rdi
 
@@ -14,6 +15,7 @@ nextchar:
 finished:
 	sub rax, rbx
 	
+	pop rbx
 	leave
 	ret
 
@@ -91,6 +93,26 @@ iprintln:
 	call sprint
 	pop rdi
 	
+	leave
+	ret
+
+calcIndex:
+	push rbp
+	mov rbp, rsp
+	; rdi - starting address of the matrix
+	; rsi - number of columns in the matrix
+	; rdx - current row index
+	; rcx - current column index
+	xor r10, r10
+    mov r10b, byte [rsi] ; move the number of columns into rax
+    shl r10, 3 ; scale the number by sizeof(double)
+    mov rax, rdx ; current row index to rax for mul
+    mul r10 ; multiply by the row size
+    add rax, rdi ; add offset to start
+  
+    shl rcx, 3 ; multiply index by 16 to scale by double size
+    add rax, rcx ; add the address of the current row to the scaled index
+
 	leave
 	ret
 
