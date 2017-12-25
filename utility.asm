@@ -100,8 +100,8 @@ fprint:
 	push rbp
 	mov rbp, rsp
 	; rdi - the address of the float to print
+	movsd xmm0, qword [rdi]
 	mov rdi, dbl_print_fmt
-    movsd xmm0, qword [rdi]
     mov rax, 1
     call _printf	
 
