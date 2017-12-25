@@ -45,12 +45,12 @@ _main:
 	ret
 
 section .bss
-rows1: resb 1
-cols1: resb 1
+rows1: resd 1
+cols1: resd 1
 mat1: resq 9
 
-rows2: resb 1
-cols2: resb 1
+rows2: resd 1
+cols2: resd 1
 mat2: resq 9
 
 section .data
@@ -63,7 +63,5 @@ inv_row_err: db "Invalid number of rows (must be 1-3).", 10, 0
 inv_col_err: db "Invalid number of columns (must be 1-3).", 10, 0
 
 scan_dim_fmt: db "%d", 0
-print_val_fmt: db "%f %f", 10, 0
-dbl_print_fmt: db "%f", 10, 0
-scan_val_fmt: db "%lf %lf", 0
+dbl_print_fmt: db "%lf", 0
 dbl_scan_fmt: db" %lf", 0

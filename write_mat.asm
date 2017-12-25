@@ -7,7 +7,6 @@ write:
 	; rdx - number of columns
 
 	push rbx
-	push rax ; for 16-byte alignment
 	push r12
 	push r13
 	push r14
@@ -17,6 +16,7 @@ write:
 	mov rbx, rdi ; starting matrix address
 	mov r14, rsi ; number of rows
 	mov r15, rdx ; number of columns
+	dec byte [r15]
 
 	mov rdi, mat_write_stat
 	call sprint 
@@ -26,21 +26,34 @@ write:
 rowWriteLoop:
 	xor r13, r13
 
-colWriteLoop:
 	mov rdi, rbx
 	mov rsi, r15
 	mov rdx, r12
-	mov rcx, r13
-	call calcIndex
+	inc byte [r15]
+	call calcRowIndex	
+	dec byte [r15]
 
-	mov rdi, dbl_print_fmt
-	movsd xmm0, qword [rax]
-	mov rax, 1
-	call _printf
+colWriteLoop:
+	mov rdi, rax
+	push rax
+	call fprint
 
+	mov rdi, 0x20
+	push rdi
+	mov rdi, rsp
+	call sprint
+	pop rdi
+	pop rax
+
+	add rax, 8
 	inc r13
 	cmp r13b, byte [r15]
 	jne colWriteLoop
+
+	mov rdi, rax
+	push rax
+	call fprintln
+	pop rax
 
 	inc r12
 	cmp r12b, byte [r14]
@@ -51,7 +64,6 @@ writeFinish:
 	pop r15
 	pop r13
 	pop r12
-	pop rax
 	pop rbx
 
 	leave

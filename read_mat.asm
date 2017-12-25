@@ -43,24 +43,29 @@ read:
 rowReadLoop:
 	mov rdi, row_val_prompt
 	call sprint	
+	
+	mov rdi, rbx
+	mov rsi, r15
+	mov rdx, r12
+	call calcRowIndex
 
 	xor r13, r13
 
 colReadLoop:
-	mov rdi, rbx
-	mov rsi, r15
-	mov rdx, r12
-	mov rcx, r13
-	call calcIndex
-
 	mov rdi, dbl_scan_fmt
 	mov rsi, rax	
+	push rax
+	push rax
+	mov rax, 1
 	call _scanf
+	pop rax
+	pop rax
 
+	add rax, 8
 	inc r13
 	cmp byte [r15], r13b
+
 	je contRowLoop
-	
 	jmp colReadLoop
 	
 contRowLoop:

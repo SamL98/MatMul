@@ -96,13 +96,41 @@ iprintln:
 	leave
 	ret
 
-calcIndex:
+fprint:
 	push rbp
 	mov rbp, rsp
+	; rdi - the address of the float to print
+	mov rdi, dbl_print_fmt
+    movsd xmm0, qword [rdi]
+    mov rax, 1
+    call _printf	
+
+	leave
+	ret
+
+fprintln:
+	push rbp
+	mov rbp, rsp
+	; rdi - the address of the float to print
+	call fprint
+	
+	mov rdi, 10
+	push rdi
+	mov rdi, rsp
+	call sprint
+	pop rdi
+
+	leave
+	ret
+
+calcRowIndex:
+	push rbp
+	mov rbp, rsp
+
 	; rdi - starting address of the matrix
 	; rsi - number of columns in the matrix
 	; rdx - current row index
-	; rcx - current column index
+
 	xor r10, r10
     mov r10b, byte [rsi] ; move the number of columns into rax
     shl r10, 3 ; scale the number by sizeof(double)
@@ -110,9 +138,6 @@ calcIndex:
     mul r10 ; multiply by the row size
     add rax, rdi ; add offset to start
   
-    shl rcx, 3 ; multiply index by 16 to scale by double size
-    add rax, rcx ; add the address of the current row to the scaled index
-
 	leave
 	ret
 
