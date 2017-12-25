@@ -64,4 +64,6 @@ inv_col_err: db "Invalid number of columns (must be 1-3).", 10, 0
 
 scan_dim_fmt: db "%d", 0
 dbl_print_fmt: db "%lf", 0
+space_print_fmt: db" %lf ", 0
+lf_print_fmt: db" %lf", 10, 0
 dbl_scan_fmt: db" %lf", 0

@@ -34,15 +34,10 @@ rowWriteLoop:
 	dec byte [r15]
 
 colWriteLoop:
-	mov rdi, rax
+	mov rdi, space_print_fmt
+	mov rsi, rax
 	push rax
 	call fprint
-
-	mov rdi, 0x20
-	push rdi
-	mov rdi, rsp
-	call sprint
-	pop rdi
 	pop rax
 
 	add rax, 8
@@ -50,9 +45,10 @@ colWriteLoop:
 	cmp r13b, byte [r15]
 	jne colWriteLoop
 
-	mov rdi, rax
+	mov rdi, lf_print_fmt
+	mov rsi, rax
 	push rax
-	call fprintln
+	call fprint
 	pop rax
 
 	inc r12
